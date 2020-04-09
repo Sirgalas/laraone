@@ -46,3 +46,6 @@ connect_server: #Connect to container_server container
 
 run_server: #Run laravel dev server
 	@docker-compose exec $(container_php) php app/artisan serve --port=8086 --host=0.0.0.0
+
+route_list: #Show all route
+	@docker-compose exec $(container_php) php artisan route:list

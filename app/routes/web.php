@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
 });
 
@@ -48,5 +48,25 @@ Route::group(['prefix'=>'/post', 'as'=>'post.'],function (){
     Route::get('/{id}',function ($id){
         return 'Posts: '.$id;
     })->name('show');
+});*/
+Route::group(['prefix'=>'/thinks'],function (){
+
+    Route::get('/','ThinksController@index');
+
+    Route::get('/{id}','ThinksController@show')
+        ->where('id','[0-9]+');
+
+    Route::post('/','ThinksController@store');
+
+    Route::put('/{id}','ThinksController@update');
+
+    Route::delete('/{id}','ThinksController@destroy');
 });
+
+Route::get('/js_framework/test','JSFrameworkController@test');
+
+Route::resources([
+    '/js_framework'=>'JSFrameworkController',
+    '/php_framework'=>'PHPFrameworkController'
+]);
 
