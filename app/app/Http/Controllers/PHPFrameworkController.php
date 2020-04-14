@@ -17,7 +17,7 @@ class PHPFrameworkController extends Controller
      */
     public function index()
     {
-        //
+        phpinfo();
     }
 
     /**

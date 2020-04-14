@@ -1,4 +1,4 @@
-FROM php:7.2-fpm
+FROM php:7.3-fpm
 
 # Set working directory
 WORKDIR /var/www
@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     libpq-dev\
-    curl
+    curl\
+    libzip-dev
 
 
 RUN apt-get install -y cron && \
@@ -26,8 +27,9 @@ RUN apt-get install -y cron && \
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
-RUN docker-php-ext-configure pgsql # -with-pgsql=/usr/local/pgsql\
-    && docker-php-ext-install pgsql pdo_pgsql
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+        && docker-php-ext-install pdo_pgsql pgsql
+
 RUN  docker-php-ext-install mbstring zip exif pcntl
 RUN  docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 RUN  docker-php-ext-install gd
@@ -36,6 +38,9 @@ RUN  docker-php-ext-install gd
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 
+# Add user for laravel application
+RUN groupadd -g 1000 www
+RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # Copy existing application directory contents
 COPY . /var/www
@@ -44,9 +49,12 @@ RUN (crontab -l ; echo "* * * * * /usr/bin/php /var/www/artisan schedule:run >>/
 
 RUN echo "sergalas:x:1000:1000:sergalas,,,:/home/sergalas:/bin/bash" >> /etc/passwd
 
-
+# Copy existing application directory permissions
+COPY --chown=www:www . /var/www
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
 #CMD ["php-fpm"]
 CMD  service supervisor start; php-fpm
+
+WORKDIR /var/www/

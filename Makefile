@@ -26,10 +26,10 @@ ownership: #Set ownership
 ###                               ###
 #####################################
 
-start: #start docker containers @docker-compose up -d
+up: #start docker containers @docker-compose up -d
 	@docker-compose up -d
 
-stop: #stop docker containers
+down: #stop docker containers
 	@docker-compose down
 
 show: #show docker's containers
