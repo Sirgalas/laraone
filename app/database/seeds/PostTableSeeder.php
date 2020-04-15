@@ -3,7 +3,9 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Car;
-class CarsTableSeeder extends Seeder
+use App\Models\Post;
+
+class PostTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +14,6 @@ class CarsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(Car::class,50)->create();
+        factory(Post::class,50)->create();
     }
 }

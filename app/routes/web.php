@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\DB;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -67,6 +67,10 @@ Route::get('/js_framework/test','JSFrameworkController@test');
 
 Route::resources([
     '/js_framework'=>'JSFrameworkController',
-    '/php_framework'=>'PHPFrameworkController'
+    '/php_framework'=>'PHPFrameworkController',
+    '/posts'=>'PostController'
 ]);
 
+Route::get('users',function (){
+    return view('users',['users'=>DB::table('users')->get()]);
+});

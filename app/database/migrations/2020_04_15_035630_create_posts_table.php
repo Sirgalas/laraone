@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCars extends Migration
+class CreatePostsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateCars extends Migration
      */
     public function up()
     {
-        Schema::create('cars', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('name',250);
-            $table->string('slug');
-            $table->string('model',255);
+            $table->string('title',610);
+            $table->string('slug',610);
+            $table->text('description');
+            $table->unsignedInteger('views')->default(0);
+            $table->unsignedInteger('likes')->default(0);
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateCars extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cars');
+        Schema::dropIfExists('posts');
     }
 }

@@ -2,10 +2,9 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Models\User;
+use App\Models\Post;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
-
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -17,12 +16,15 @@ use Illuminate\Support\Str;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(Post::class, function (Faker $faker) {
+    $title=$faker->sentence(4);
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'remember_token' => Str::random(10),
+        'title' => $title,
+        'slug'=>Str::slug($title),
+        'description' => $faker->paragraph(5),
+        'views'=>$faker->numberBetween(1,100),
+        'likes'=>$faker->numberBetween(1,10),
+        'created_at' => now(),
+        'updated_at' => now(),
     ];
 });
